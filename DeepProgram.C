@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <random>
 using namespace std;
 
 struct  Distance
@@ -42,15 +44,21 @@ std::vector<int> FindSolutioin(std::vector<int> data, double metric){
 std::vector<int> REMOVE(std::vector<int> data){// this function can probably be merged into FindSolutioin yet need to think more.
     double distance_min = 10000.0;
     int index =0;
+    std::vector<int> min_candidates;
+    min_candidates.clear();
     for(int i=0; i < data.size(); i++){
         for(int j= i-1; j>=0; j--){
             double distance = abs(data[i] -data[j]);
-            if(distance<distance_min){
+            if(distance<=distance_min){
                 index = i;
                 distance_min = distance;
+                min_candidates.push_back(i);
             }
         }
     }
+    //select a romdam index
+    std::random_shuffle(min_candidates.begin(), min_candidates.end());    
+    index = min_candidates[0];
     if(index == 0){//if minimal happens around 0, remove 1
         data.erase(data.begin()+1);
     }
