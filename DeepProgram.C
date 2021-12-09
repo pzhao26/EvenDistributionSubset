@@ -55,7 +55,7 @@ std::vector<int> REMOVE(std::vector<int> data){// this function can probably be 
         }
     }
     //select a romdam index
-    if(min_candidates[min_candidates.size()-1] == data[data.size()-1]){//if last data is within, remove it from list and remove 2nd last from data
+    if(min_candidates[min_candidates.size()-1] == data[data.size()-1]){//if last data is within, remove it from list and remove 2nd last from data, this gives a bias
         min_candidates.erase(min_candidates.begin()+min_candidates.size()-1);
         data.erase(data.begin()+data.size()-2);
     }
@@ -88,12 +88,6 @@ void DeepProgram()
         newdata.push_back(data[result[i]]);
     }
     std::reverse(newdata.begin(),newdata.end());
-
-    cout << "---------------------- BEFORE REMOVAL --------------------" << endl;
-    for (int i = 0; i < newdata.size(); i++){
-       cout << newdata[i] << " ";
-    }
-    cout << " " << endl;
 
     while(newdata.size()>num_sel){//remove a data that is most close to each other
         newdata = REMOVE(newdata);
