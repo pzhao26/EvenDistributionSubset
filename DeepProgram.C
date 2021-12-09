@@ -46,24 +46,18 @@ std::vector<int> REMOVE(std::vector<int> data){// this function can probably be 
     int index =0;
     std::vector<int> min_candidates;
     min_candidates.clear();
-    for(int i=1; i< data.size(); i++){
+    for(int i=1; i< data.size()-1; i++){
         double distance = abs(data[i] -data[i-1]);
         if(distance<=distance_min){
             index = i;
             distance_min = distance;
-            min_candidates.push_back(i);
+            min_candidates.push_back(index);
         }
     }
     //select a romdam index
-    if(min_candidates[min_candidates.size()-1] == data[data.size()-1]){//if last data is within, remove it from list and remove 2nd last from data, this gives a bias
-        min_candidates.erase(min_candidates.begin()+min_candidates.size()-1);
-        data.erase(data.begin()+data.size()-2);
-    }
-    else{
-        std::random_shuffle(min_candidates.begin(), min_candidates.end());    
-        index = min_candidates[0];
-        data.erase(data.begin()+index);
-    }
+    std::random_shuffle(min_candidates.begin(), min_candidates.end());    
+    index = min_candidates[0];
+    data.erase(data.begin()+index);
     return data;
 }
 
