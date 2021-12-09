@@ -46,27 +46,24 @@ std::vector<int> REMOVE(std::vector<int> data){// this function can probably be 
     int index =0;
     std::vector<int> min_candidates;
     min_candidates.clear();
-    for(int i=0; i < data.size(); i++){
-        for(int j= i-1; j>=0; j--){
-            double distance = abs(data[i] -data[j]);
-            if(distance<=distance_min){
-                index = i;
-                distance_min = distance;
-                min_candidates.push_back(i);
-            }
+    for(int i=1; i< data.size(); i++){
+        double distance = abs(data[i] -data[i-1]);
+        if(distance<=distance_min){
+            index = i;
+            distance_min = distance;
+            min_candidates.push_back(i);
         }
     }
     //select a romdam index
-    std::random_shuffle(min_candidates.begin(), min_candidates.end());    
-    index = min_candidates[0];
-    if(index == 0){//if minimal happens around 0, remove 1
-        data.erase(data.begin()+1);
-    }
-    else if(index == data.size()-1){//if minimal happens around last, remove last-1
+    if(min_candidates[min_candidates.size()-1] == data[data.size()-1]){//if last data is within, remove it from list and remove 2nd last from data
+        min_candidates.erase(min_candidates.begin()+min_candidates.size()-1);
         data.erase(data.begin()+data.size()-2);
     }
-    else
-    data.erase(data.begin()+index);
+    else{
+        std::random_shuffle(min_candidates.begin(), min_candidates.end());    
+        index = min_candidates[0];
+        data.erase(data.begin()+index);
+    }
     return data;
 }
 
@@ -91,6 +88,12 @@ void DeepProgram()
         newdata.push_back(data[result[i]]);
     }
     std::reverse(newdata.begin(),newdata.end());
+
+    cout << "---------------------- BEFORE REMOVAL --------------------" << endl;
+    for (int i = 0; i < newdata.size(); i++){
+       cout << newdata[i] << " ";
+    }
+    cout << " " << endl;
 
     while(newdata.size()>num_sel){//remove a data that is most close to each other
         newdata = REMOVE(newdata);
